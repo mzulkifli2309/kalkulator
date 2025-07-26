@@ -1,11 +1,143 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=360, initial-scale=1.0" />
+    <title>
+      Kalkulator moist dan kadar air
+    </title>
+    <style>
+      body {
+  font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        background-color: #f0f0f0;
+      }
+      .container {
+        width: 360px;
+        min-height: 100vh;
+        box-shadow: 0 0 10px
+          rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        box-sizing: border-box;
+        background: #ecf0f1
+      }
+      h1 {
+        font-size: 20px;
+        text-align: center;
+      }
+    label {
+      margin-bottom: 2px;
+      display: block;
+      font-weight: bold;
+      color: #3498d;
+      
+    }
+    input {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 5px;
+      box-sizing: border-box;
+      border: 2px solid #2980b9;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: aquamarine;
+    }
+
+    .output {
+      margin-top: 10px;
+      padding: 15px;
+      background: #ecf0f1;
+      border-radius: 6px;
+    }
     
-</body>
+
+     table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #bdc3c7;
+      text-align: left;
+    }
+
+    th {
+      background-color: #bdc3c7;
+    }
+    </style>
+    
+  </head>
+  <body>
+    <div class="container">
+     <h1>Kalkulator Kadar Air & Minyak (Wet Basis)</h1>
+
+  <label>Berat Wadah</label>
+  <input type="number" id="wadah" step="0.0001" placeholder="Masukan Data" required onkeydown="pindah(event, 'basah')" />
+
+  <label>Berat Wadah + Sampel Basah</label>
+  <input type="number" id="basah" step="0.0001"  placeholder="Masukan Data" required  onkeydown="pindah(event, 'kering')"/>
+
+  <label>Berat Wadah + Sampel Kering</label>
+  <input type="number" id="kering" step="0.0001"  placeholder="Masukan Data" required  onkeydown="pindah(event, 'botol')"/>
+
+  <label>Berat Botol</label>
+  <input type="number" id="botol" step="0.0001"  placeholder="Masukan Data" required  onkeydown="pindah(event, 'botolMinyak')"/>
+
+  <label>Berat Botol + Minyak:</label>
+  <input type="number" id="botolMinyak" step="0.0001"  placeholder="Masukan Data" required />
+
+  <button onclick="hitung()">Hitung</button>
+
+  <div class="output" id="hasil"></div>
+
+  <script>
+    function pindah(e, nextId) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById(nextId).focus();
+      }
+    }
+    function hitung() {
+      const wadah = parseFloat(document.getElementById('wadah').value);
+      const basah = parseFloat(document.getElementById('basah').value);
+      const kering = parseFloat(document.getElementById('kering').value);
+      const botol = parseFloat(document.getElementById('botol').value);
+      const botolMinyak = parseFloat(document.getElementById('botolMinyak').value);
+
+      const beratBasah = basah - wadah;
+      const beratKering = kering - wadah;
+      const beratAir = beratBasah - beratKering;
+      const beratMinyak = botolMinyak - botol;
+
+      const kadarAir = (beratAir / beratBasah) * 100;
+      const kadarMinyak = (beratMinyak / beratBasah) * 100;
+
+      document.getElementById('hasil').innerHTML = `
+      
+        <table>
+          <tr><td><strong>Kadar Air</strong></td><td><strong>${kadarAir.toFixed()} %</strong></td></tr>
+          <tr><td><strong>Kadar Minyak (Wet Basis)</strong></td><td><strong>${kadarMinyak.toFixed()} %</strong></td></tr>
+        </table>
+      
+      `;
+    }
+  </script>
+    </div>
+    
+  </body>
 </html>
